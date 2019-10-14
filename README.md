@@ -21,9 +21,12 @@ sys.setdefaultencoding('utf8')
 2. BaseResponse.py（common目录下）
 封装返回的json格式
 
-* win10手动创建.gitignore文件
-直接命名报错
-1. 在项目根目录下面创建 gitignore.txt 文件,你也可以使用任意的名字来命名。
-2. 右键选择 Git Bash , 调出 Git 命令行。
-3. 输入 mv gitignore.txt .gitignore 即可。
-4. 编辑 .gitignore 添加规则即可。
+3. python编码格式的问题
+```python
+import sys
+print(sys.getdefaultencoding()) # 打印当前系统默认编码
+```
+* python中utf-8与gbk/gb2312转换，需要通过unicode/ascii做为中介
+* utf-8转gbk，通过decode解码为unicode，再通过encode编码为gbk；xxx.decode("utf-8").encode("gbk")
+* gbk转utf-8类似
+* windows系统最好以utf-8的编码输出，不会有乱码

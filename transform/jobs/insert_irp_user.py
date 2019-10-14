@@ -8,9 +8,10 @@ import sys
 import os
 # print(os.getcwd()) # C:\Code\django_test
 # print(os.path.abspath('..')) # C:\Code
-cpath="%s%s"%(os.getcwd(),"\common")
-sys.path.append(cpath)
-import util
+# cpath="%s%s"%(os.getcwd(),"\common")
+# sys.path.append(cpath)
+sys.path.append(os.getcwd())
+from common import util
 
 # 文件为中文名编码会造成读取文件报错
 # filepath=r'C:\Code\django_test\transform\data\jg_副本.xls'
@@ -44,4 +45,3 @@ if __name__ == '__main__':
 '''
 if __name__=='__main__':
   insertdata2db()
-  print 'main func'
