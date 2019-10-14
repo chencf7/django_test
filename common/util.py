@@ -40,18 +40,30 @@ def read_excel(filename=""):
   trow=sheet1.nrows
   tcol=sheet1.ncols
 
-  entity = Opgorg()
-  entity.id=get_guid();
-  entity.name='我是一个猪'
-  print(entity)
+  # 定义list
+  curlist=[]
   for i in range(1, trow):
     rows = sheet1.row_values(i) # 获取行内容
-    orglist = str(rows[7]).split('/')
-    for crtorg in orglist:
-      print(crtorg)
+    # print(rows[7])
+    names = str(rows[7]).split('/')
+    namelength=len(names)
+    for jk in range(0, namelength):
+      curname=str(names[jk]).decode('utf-8').encode('utf-8')
+      if(curname not in curlist and jk<(namelength-1)):
+        # curlist.append(curname)
+        entity=Opgorg()
+        entity.id=get_guid()
+        entity.name=curname
+        curlist.append(entity)
+
+    # for orgname in names:
+    #   if(orgname not in curlist):
+    #     curlist.append(orgname)
+      
     # for j in range(0, tcol):
     #   # print(rows[j].decode('UTF-8').encode("gb2312"))
     #   print rows[j]
-    break
   # cols = sheet1.col_values(3) # 获取列内容
+  for jitm in curlist:
+    print(jitm.name)
 
