@@ -67,3 +67,9 @@ def read_excel(filename=""):
   for jitm in curlist:
     print(jitm.name)
 
+
+# 判断对象数组是否存在某一项
+def list_isexist(list, _v):
+  flag=False
+  pass
+
