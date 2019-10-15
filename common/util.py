@@ -50,11 +50,11 @@ def read_excel(filename=""):
     for jk in range(0, namelength):
       curname=str(names[jk]).decode('utf-8').encode('utf-8')
       if(curname not in curlist and jk<(namelength-1)):
-        # curlist.append(curname)
-        entity=Opgorg()
-        entity.id=get_guid()
-        entity.name=curname
-        curlist.append(entity)
+        curlist.append(curname)
+        # entity=Opgorg()
+        # entity.id=get_guid()
+        # entity.name=curname
+        # curlist.append(entity)
 
     # for orgname in names:
     #   if(orgname not in curlist):
