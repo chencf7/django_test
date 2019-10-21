@@ -23,12 +23,13 @@ from django.contrib import admin
 from . import view
 from api import search
 
-urlpatterns = [
-    # 正则表达式，以^开头，以$结束
-    url(r'^$', view.hello),
-    url(r'^hello$', view.hello_tpl),
-    url(r'^search_page$', search.search_page),
-    url(r'^search$', search.search),
-    
-    # url(r'^admin/', admin.site.urls),
+urlpatterns = [ 
+  # 正则表达式，以^开头，以$结束
+  # url(r'^$', view.hello),
+  url(r'^hello$', view.hello),
+  url(r'^hello_tpl$', view.hello_tpl),
+  url(r'^search$', search.search_page),
+  url(r'^result$', search.search_result),
+
+  url(r'^admin/', admin.site.urls),
 ]
