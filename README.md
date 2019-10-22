@@ -9,6 +9,19 @@ python manage.py startapp xxx
 4. 启动项目
 python manage.py runserver 127.0.0.1:8000
 或者使用vscode直接调试启动即可
+**
+5. 添加restful api
+> + 安装restful框架，pip install djangorestframework
+> + 在默认启动app中setting添加以下配置内容
+> ```python
+> INSTALLED_APPS = [
+>   ...
+>   # 使用django扩展包djangorestframework搭建restful api
+>   'rest_framework',
+>   ... # 自定义api
+> ]
+> ```
+
 
 ##### django框架
 1. 设置整个框架下解码为utf-8，避免每个文件头设置#coding=utf-8
@@ -64,4 +77,20 @@ python manage.py changepassword admin
 > # Register your models here.
 > admin.site.register(Test)
 > ```
+
+
+##### python 代码检查
++ flake8
+安装flake8之后写代码的时候编辑器就会提示哪里出错，代码格式不规范也会提示
+> 打开命令行
+> 输入 "pip install flake8"
+> 安装flake8成功后，打开VScode，文件->首选项->用户设置，在settings.json文件中输> "python.linting.flake8Enabled": true
+
++ yapf
+格式化python代码，消灭警告部分提示，在VScode中按Alt+Shift+F即可自动格式化代码
+> 打开命令行
+> 输入 "pip install yapf"
+> 安装yapf成功后，打开VScode，文件->首选项->用户设置，在settings.json文件中输入"python.formatting.provider": "yapf"
+
+
 
