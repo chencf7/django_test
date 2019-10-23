@@ -55,21 +55,25 @@ def read_excel(filename=""):
       org_name = str(org_name_arr[jk])
 
       existorg = []
-      # 最后一项为岗位
+      # 最后一项为岗位，若同一个组织下的岗位相同，则无需插入
       if jk==(nlength - 1):
-        pass
+        if not prev_org is None:
+          lb_filter=lambda crt_org:crt_org.name==org_name and crt_org.parent==prev_org.id
+          existorg=filter(lb_filter, org_list)
+        else:
+          pass
       else:
         existorg=filter(lambda crt_org:crt_org.name==org_name, org_list)
-      if len(existorg)>0:
+      if len(existorg)>0 and jk<(nlength - 1):
         prev_org=existorg[0]
       if len(existorg)==0:
         entity=Opgorg()
         entity.id=get_guid()
         entity.name=org_name
         if jk==(nlength - 1):
-          entity.type='post'
+          entity.type=u'岗位'
         else:
-          entity.type='org'
+          entity.type=u'组织'
         if prev_org is None:
           entity.syscode=entity.id+'.'
           entity.nodeleves=1
