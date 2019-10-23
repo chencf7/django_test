@@ -45,21 +45,31 @@ def read_excel(filename=""):
   org_list=[]
   for i in range(1, trow):
     prev_org = None
-
     rows = sheet1.row_values(i) # 获取行内容
     # 获取第7列内容，第7列为组织列
     # print(rows[7])
     org_name_arr = str(rows[7]).split('/')
     nlength=len(org_name_arr)
     for jk in range(0, nlength):
-      org_name=str(org_name_arr[jk]).decode('utf-8').encode('utf-8')
+      # org_name=str(org_name_arr[jk]).decode('utf-8').encode('utf-8')
+      org_name = str(org_name_arr[jk])
 
-      existorg = filter(lambda crt_org:crt_org.name==org_name, org_list)
-      if len(existorg)==0 and jk<(nlength - 1):
+      existorg = []
+      # 最后一项为岗位
+      if jk==(nlength - 1):
+        pass
+      else:
+        existorg=filter(lambda crt_org:crt_org.name==org_name, org_list)
+      if len(existorg)>0:
+        prev_org=existorg[0]
+      if len(existorg)==0:
         entity=Opgorg()
         entity.id=get_guid()
         entity.name=org_name
-        entity.type=u'组织'
+        if jk==(nlength - 1):
+          entity.type='post'
+        else:
+          entity.type='org'
         if prev_org is None:
           entity.syscode=entity.id+'.'
           entity.nodeleves=1
@@ -84,7 +94,7 @@ def read_excel(filename=""):
 
 
 # 判断对象数组是否存在某一项
-def list_isexist(list, _v):
-  flag=False
-  pass
+# def list_isexist(list, _v):
+#   flag=False
+#   pass
 

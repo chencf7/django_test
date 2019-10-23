@@ -22,12 +22,13 @@ def insertdata2db():
   # executemany写sql不管什么类型，统一使用%s作为占位符
   # %s不需要引号
   sqlstr='insert into opgorg(`id`,name,parent,syscode,nodeleves,type) values(%s,%s,%s,%s,%s,%s)'
-  # args_tup = [(itm.id,itm.name,itm.parent,itm.syscode,itm.nodeleves,itm.type)
-  #             for itm in rlist]
-  args_tup=(('12','2','3','4','5','6'),('11','21','31','41','51','61'))
+  args_tup = [(itm.id,itm.name,itm.parent,itm.syscode,itm.nodeleves,itm.type)
+              for itm in rlist]
+  # args_tup=(('12','2','3','4','5','6'),('11','21','31','41','51','61'))
   db = MySQLdb.connect(host="127.0.0.1",user="root",passwd="dhcc",db="irp_web",port=3306,charset='utf8')
   cursor = db.cursor()
   try:
+    # 参数args_tup可为数组（内部为元组），也可为元组（内部仍为元组）
     cursor.executemany(sqlstr,args_tup)
     db.commit()
   except Exception as e:
