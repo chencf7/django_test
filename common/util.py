@@ -10,7 +10,7 @@ import uuid
 import xlrd
 from datetime import date,datetime
 # 此处的路径需要参考调用本文件的main方法所在的路径
-from django_test.entity.opgorg import *
+from entity.opgorg import *
 
 '''
 uuid1()：这个是根据当前的时间戳和MAC地址生成的，最后的12个字符408d5c985711对应的就是MAC地址
@@ -25,15 +25,16 @@ uuid5(p1, p2)：这个看起来和uuid3()貌似并没有什么不同，写法一
 name = 'irp_web_uuid'
 namespace = uuid.NAMESPACE_URL
 def get_guid():
-  uid = str(uuid.uuid5(namespace,name))
+  # uid = str(uuid.uuid5(namespace,name))
+  uid = str(uuid.uuid4())
   return ''.join(uid.split('-'))
 
 def read_excel(filename=""):
   # 文件名称出现中文字符时，读取文件报错， 需要进行编码
-  '''
+  """
   Windows 下文件路径的中文编码是 gbk/GB2312/CP396，而 Python 设置编码为 UTF-8 ...
   所以应当对每一个文件路径做编码转换，就是先按照 GB2312 decode 然后再按照 UTF-8 encode..
-  '''
+  """
   fn=unicode(filename, "utf8")
   wb=xlrd.open_workbook(filename=fn,encoding_override="utf-8")
   sheet1 = wb.sheet_by_index(0)
@@ -41,31 +42,45 @@ def read_excel(filename=""):
   tcol=sheet1.ncols
 
   # 定义list
-  curlist=[]
+  org_list=[]
   for i in range(1, trow):
+    prev_org = None
+
     rows = sheet1.row_values(i) # 获取行内容
+    # 获取第7列内容，第7列为组织列
     # print(rows[7])
-    names = str(rows[7]).split('/')
-    namelength=len(names)
-    for jk in range(0, namelength):
-      curname=str(names[jk]).decode('utf-8').encode('utf-8')
-      if(curname not in curlist and jk<(namelength-1)):
-        curlist.append(curname)
-        # entity=Opgorg()
-        # entity.id=get_guid()
-        # entity.name=curname
-        # curlist.append(entity)
+    org_name_arr = str(rows[7]).split('/')
+    nlength=len(org_name_arr)
+    for jk in range(0, nlength):
+      org_name=str(org_name_arr[jk]).decode('utf-8').encode('utf-8')
+
+      existorg = filter(lambda crt_org:crt_org.name==org_name, org_list)
+      if len(existorg)==0 and jk<(nlength - 1):
+        entity=Opgorg()
+        entity.id=get_guid()
+        entity.name=org_name
+        entity.type=u'组织'
+        if prev_org is None:
+          entity.syscode=entity.id+'.'
+          entity.nodeleves=1
+        else:
+          entity.parent=prev_org.id
+          entity.syscode=prev_org.syscode+entity.id+'.'
+          entity.nodeleves=prev_org.nodeleves+1
+        org_list.append(entity)
+        prev_org=entity
 
     # for orgname in names:
-    #   if(orgname not in curlist):
-    #     curlist.append(orgname)
+    #   if(orgname not in org_list):
+    #     org_list.append(orgname)
       
     # for j in range(0, tcol):
     #   # print(rows[j].decode('UTF-8').encode("gb2312"))
     #   print rows[j]
   # cols = sheet1.col_values(3) # 获取列内容
-  for jitm in curlist:
-    print(jitm.name)
+  # for jitm in org_list:
+  #   print('~'.join(jitm.__dict__.values()))
+  return org_list
 
 
 # 判断对象数组是否存在某一项

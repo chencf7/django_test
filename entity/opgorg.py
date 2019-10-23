@@ -5,7 +5,11 @@ class Opgorg(object):
     self.id=''
     self.name=''
     self.code=''
-    self.Parent = None
+    self.parent=''
+    self.syscode=''
+    self.nodeleves=0
+    self.type=''
+    # self.Father_Obj = None
 
   def print_Opgorg(self):
     # Python 2.7 + .format优化写法

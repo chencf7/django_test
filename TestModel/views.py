@@ -7,7 +7,7 @@ from django.http import HttpResponse
 # from rest_framework.response import Response
 import json
 import uuid
-# from models import Contact
+from models import Contact
 
 
 # Create your views here.
@@ -18,9 +18,19 @@ def Hellotestmodel(request):
 def SaveContact(request):
     data = json.loads(request.body)
     data['id'] = uuid.uuid4()
+    Contact.objects.create(**data)
+    res={
+        'success': True
+    }
+    return HttpResponse(json.dumps(res), content_type='application/json')
+    # try:
+    #     pass
+    # except Exception,e:
+    #     pass
+
     # res = {
     #   'success': True,
     #   'data': 'data is not null'
     # }
     # return Response(res)
-    return HttpResponse("hello world")
+    # return HttpResponse("hello world")

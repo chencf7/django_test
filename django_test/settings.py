@@ -41,9 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 使用django扩展包djangorestframework搭建restful api
-    # 'rest_framework',
+    'rest_framework',
     # 添加app设置跨域
-    'corsheaders',
+    # 'corsheaders',
     # 添加创建的app，python manage.py makemigrations时才能自动创建models
     'TestModel',
     'hr',
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 添加中间件设置跨域，注释csrf中间件
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

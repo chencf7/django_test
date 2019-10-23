@@ -15,16 +15,31 @@ from common import util
 
 # 文件为中文名编码会造成读取文件报错
 # filepath=r'C:\Code\django_test\transform\data\jg_副本.xls'
-fp="%s%s"%(os.getcwd(),r'\transform\data\jg_副本.xls')
+# fp="%s%s"%(os.getcwd(),r'\transform\data\jg_副本.xls')
+fp="%s%s"%(r'C:\Code\django_test',r'\transform\data\jg_副本.xls')
 def insertdata2db():
-  util.read_excel(fp)
+  rlist=util.read_excel(fp)
+  sqlstr="insert into opgorg(`id`, name, `parent`, syscode, nodeleves, `type`)\
+      values('%s','%s','%s','%s','%s','%s')"
+  # args_tup = [(itm.id,itm.name,itm.parent,itm.syscode,itm.nodeleves,itm.type)
+  #             for itm in rlist]
+  args_tup=[('1','2','3','4','5','6'),('11','21','31','41','51','61')]
+
+  db = MySQLdb.connect(host="127.0.0.1",user="root",passwd="dhcc",db="irp_web",port=3306,charset='utf8')
+  cursor = db.cursor()
+  try:
+    cursor.executemany(sqlstr,args_tup)
+    db.commit()
+  except Exception as e:
+    db.rollback()
+  db.close()
   return 0
 
-  db=MySQLdb.connect("127.0.0.1", "root", "dhcc", "irp_web")
+  db=MySQLdb.connect("127.0.0.1","root","dhcc","irp_web")
   cursor=db.cursor()
   guid = util.get_guid()
   sql="insert into irp_user(id, code, name, idcard)\
-      values('%s', '2523', '1523333', '429959291')"%(guid)
+      values('%s', '2523', '1523333', '429959291')" % guid
   try:
     cursor.execute(sql)
     db.commit()
