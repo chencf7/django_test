@@ -1,26 +1,22 @@
 # -*- coding: utf-8 -*- 
 import sys
 # 输出系统默认编码，为ascii
-print(sys.getdefaultencoding())
+# print(sys.getdefaultencoding())
 reload(sys)
 sys.setdefaultencoding("utf-8")
 # 重置默认编码后，输出utf-8
-print(sys.getdefaultencoding())
+# print(sys.getdefaultencoding())
+
 import uuid
 import xlrd
-from datetime import date,datetime
 # 此处的路径需要参考调用本文件的main方法所在的路径
 from entity.opgorg import *
 
 '''
-uuid1()：这个是根据当前的时间戳和MAC地址生成的，最后的12个字符408d5c985711对应的就是MAC地址
-因为是MAC地址，那么唯一性应该不用说了。但是生成后暴露了MAC地址这就很不好了。
-uuid3(p1, p2)：里面的namespace和具体的字符串都是我们指定的，然后呢···
-应该是通过MD5生成的，这个我们也很少用到，莫名其妙的感觉。
-uuid4()：这是基于随机数的uuid，既然是随机就有可能真的遇到相同的
-但这就像中奖似的，几率超小，因为是随机而且使用还方便，所以使用这个的还是比较多的。
-uuid5(p1, p2)：这个看起来和uuid3()貌似并没有什么不同，写法一样
-也是由用户来指定namespace和字符串，不过这里用的散列并不是MD5，而是SHA1.
+uuid1()：根据当前的时间戳和MAC地址生成，最后的12个字符对应的是MAC地址，确保唯一性，但会暴露MAC地址
+uuid3(p1, p2)：里面的namespace和具体的字符串都是我们指定的，通过MD5生成的，比较少用到
+uuid4()：这是基于随机数的uuid，既然是随机就有可能真的遇到相同的，随机重复几率很小
+uuid5(p1, p2)：用户来指定namespace和字符串，不过这里用的散列并不是MD5，而是SHA1
 '''
 name = 'irp_web_uuid'
 namespace = uuid.NAMESPACE_URL
@@ -29,7 +25,25 @@ def get_guid():
   uid = str(uuid.uuid4())
   return ''.join(uid.split('-'))
 
-def read_excel(filename=""):
+class Openexcel:
+  def __init__(self, file_name='',sheet_id=0):
+    # 如果传入参数，进行初始化出现异常的情况如何抛出错误
+    self.filename=file_name
+    self.sheetid=sheet_id
+
+def read_excel(file_name='', sheet_id=0):
+  fn = unicode(file_name, "utf8")
+  wb = xlrd.open_workbook(filename=fn, encoding_override="utf-8")
+  sheet1 = wb.sheet_by_index(sheet_id)
+  trow = sheet1.nrows
+  tcol = sheet1.ncols
+  dttable = []
+  for i in range(1, trow):
+    print(sheet1.row_values(i)) # 获取行内容
+    break
+
+
+def read_excel_test(filename=""):
   # 文件名称出现中文字符时，读取文件报错， 需要进行编码
   """
   Windows 下文件路径的中文编码是 gbk/GB2312/CP396，而 Python 设置编码为 UTF-8 ...

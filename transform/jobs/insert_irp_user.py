@@ -19,6 +19,7 @@ from common import util
 fp="%s%s"%(r'C:\Code\django_test',r'\transform\data\jg_副本.xls')
 def insertdata2db():
   rlist=util.read_excel(fp)
+  return 0
   # executemany写sql不管什么类型，统一使用%s作为占位符
   # %s不需要引号
   sqlstr='''insert into opgorg(`id`,name,parent,syscode,nodeleves,type,dr,createtime) 
